@@ -22,19 +22,20 @@ int main(int argc, char* argv[])
 	Raytracer raytracer;
 	Camera maincamera;
 
+	glm::vec3 colour(1, 0, 0);
+
 	//Sphere sphere1(glm::vec3(100, 100,100), glm::vec3(1.0, 0.0, 0.0), 60);
-	Sphere* sphere2 = new Sphere(glm::vec3(1000,540, -100), glm::vec3(1.0, 1.0, 0.0), 100);
+	Sphere* sphere2 = new Sphere(glm::vec3(960,540, -100), glm::vec3(1.0, 0.0, 0.0), 100);
 	raytracer.sphere.push_back(sphere2);
 	
 	for (int y = 0; y < winSize.y; y++)
 	{
 		for (int x = 0; x < winSize.x; x++)
 		{
+
 			Ray ray = maincamera.GetRay(glm::ivec2(x, y));
-			glm::vec3 colour = raytracer.TraceRay(ray);
+			colour = raytracer.TraceRay(ray);
 			_myFramework.DrawPixel(glm::ivec2(x, y), colour);
-
-
 		}
 	}
 
