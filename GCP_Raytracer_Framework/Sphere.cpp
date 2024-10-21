@@ -9,25 +9,27 @@ Sphere::Sphere(glm::vec3 _position, glm::vec3 _colour, float _radius )
 
 bool Sphere::RayCollide(Ray _ray, glm::vec3& _CollidePoint)
 {
-	bool doesRayCollide = true;
+
 
 	glm::vec3 L = mPosition - _ray.mOrigin;
-	float tc = glm::dot(L, _ray.mOrigin);
+	float tc = glm::dot(L, _ray.mDirection);
 
 
-	if (tc < 0.0 == false)
+	if (tc < 0.0)
 	{
-		doesRayCollide = false;
+		 return false;
 	}
 
 	float d2 = glm::dot(L, L) - (tc * tc);
 
-	if (d2 > mRadius)
-	{
-		doesRayCollide = false;
-	}
+
 
 	float radius2 = mRadius * mRadius;
+
+	if (d2 > radius2)
+	{
+		return false;
+	}
 
 	float t1c = glm::sqrt(radius2 - d2);
 
@@ -35,7 +37,7 @@ bool Sphere::RayCollide(Ray _ray, glm::vec3& _CollidePoint)
 
 	_CollidePoint = _ray.mOrigin + (_ray.mDirection + t1);
 
-	return doesRayCollide;
+	return true;
 }
 glm::vec3 Sphere::ShadePosition(glm::vec3 _position)
 {
