@@ -8,7 +8,7 @@
 int main(int argc, char* argv[])
 {
 	// Set window size
-	glm::ivec2 winSize(1920,1080);
+	glm::ivec2 winSize(1080,720);
 
 	// This will handle rendering to screen
 	GCP_Framework _myFramework;
@@ -24,8 +24,9 @@ int main(int argc, char* argv[])
 
 	glm::vec3 colour(1, 0, 0);
 
-	//Sphere sphere1(glm::vec3(100, 100,100), glm::vec3(1.0, 0.0, 0.0), 60);
-	Sphere* sphere2 = new Sphere(glm::vec3(960,540, -100), glm::vec3(1.0, 0.0, 0.0), 100);
+	Sphere* sphere1 = new Sphere(glm::vec3(580, 360, -40), glm::vec3(0.0, 0.0, 1.0), 100);
+	raytracer.sphere.push_back(sphere1);
+	Sphere* sphere2 = new Sphere(glm::vec3(460,360, -50), glm::vec3(1.0, 0.0, 0.0), 100);
 	raytracer.sphere.push_back(sphere2);
 	
 	for (int y = 0; y < winSize.y; y++)
@@ -33,7 +34,7 @@ int main(int argc, char* argv[])
 		for (int x = 0; x < winSize.x; x++)
 		{
 
-			Ray ray = maincamera.GetRay(glm::ivec2(x, y));
+			Ray ray = maincamera.GetRay(glm::ivec2(x, y),glm::ivec2(winSize.x,winSize.y));
 			colour = raytracer.TraceRay(ray);
 			_myFramework.DrawPixel(glm::ivec2(x, y), colour);
 		}

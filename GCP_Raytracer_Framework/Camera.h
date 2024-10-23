@@ -4,9 +4,10 @@
 class Camera
 {
 public:
-	Ray GetRay(glm::ivec2 windowPos);
+	Ray GetRay(glm::ivec2 windowPos,glm::ivec2 winSize);
 	
 private:
-	glm::mat4 mView;
-	glm::mat4 mProj;
+	glm::mat4 mViewMat;
+	glm::mat4 mProjMat;
+	glm::mat4 mModelMat;
 };

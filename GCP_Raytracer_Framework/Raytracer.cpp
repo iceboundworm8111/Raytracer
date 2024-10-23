@@ -14,6 +14,6 @@ glm::vec3 Raytracer::TraceRay(Ray ray)
 
 	}
 
-	return glm::vec3(0.0f, 0.0f, 0.0f);
+	return glm::vec3(0.3f, 0.3f, 0.3f);
 
 }
