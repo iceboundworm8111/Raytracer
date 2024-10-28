@@ -8,7 +8,7 @@
 int main(int argc, char* argv[])
 {
 	// Set window size
-	glm::ivec2 winSize(1080,720);
+	glm::ivec2 winSize(640,480);
 
 	// This will handle rendering to screen
 	GCP_Framework _myFramework;
@@ -20,13 +20,13 @@ int main(int argc, char* argv[])
 	}
 
 	Raytracer raytracer;
-	Camera maincamera;
+	Camera maincamera(glm::ivec2(winSize.x, winSize.y));
 
 	glm::vec3 colour(1, 0, 0);
 
-	Sphere* sphere1 = new Sphere(glm::vec3(580, 360, -40), glm::vec3(0.0, 0.0, 1.0), 100);
+	Sphere* sphere1 = new Sphere(glm::vec3(0, 0, -100), glm::vec3(0.0, 0.0, 1.0), 1);
 	raytracer.sphere.push_back(sphere1);
-	Sphere* sphere2 = new Sphere(glm::vec3(460,360, -50), glm::vec3(1.0, 0.0, 0.0), 100);
+	Sphere* sphere2 = new Sphere(glm::vec3(-10,0, -100), glm::vec3(1.0, 0.0, 0.0), 1);
 	raytracer.sphere.push_back(sphere2);
 	
 	for (int y = 0; y < winSize.y; y++)
