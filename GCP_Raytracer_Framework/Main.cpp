@@ -24,9 +24,9 @@ int main(int argc, char* argv[])
 
 	glm::vec3 colour(1, 0, 0);
 
-	Sphere* sphere1 = new Sphere(glm::vec3(0, 0, -100), glm::vec3(0.0, 0.0, 1.0), 1);
+	Sphere* sphere1 = new Sphere(glm::vec3(0, 0, -50), glm::vec3(0.0, 0.0, 1.0), 1);
 	raytracer.sphere.push_back(sphere1);
-	Sphere* sphere2 = new Sphere(glm::vec3(-10,0, -100), glm::vec3(1.0, 0.0, 0.0), 1);
+	Sphere* sphere2 = new Sphere(glm::vec3(-1,0, -49), glm::vec3(1.0, 0.0, 0.0), 1);
 	raytracer.sphere.push_back(sphere2);
 	
 	for (int y = 0; y < winSize.y; y++)
@@ -37,6 +37,7 @@ int main(int argc, char* argv[])
 			Ray ray = maincamera.GetRay(glm::ivec2(x, y),glm::ivec2(winSize.x,winSize.y));
 			colour = raytracer.TraceRay(ray);
 			_myFramework.DrawPixel(glm::ivec2(x, y), colour);
+
 		}
 	}
 
