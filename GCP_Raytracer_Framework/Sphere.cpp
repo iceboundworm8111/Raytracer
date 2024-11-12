@@ -40,15 +40,8 @@ bool Sphere::RayCollide(Ray _ray, glm::vec3& _CollidePoint)
 
 	return true;
 }
-glm::vec3 Sphere::ShadePosition(glm::vec3 _position)
+
+glm::vec3 Sphere::NormalPosition(glm::vec3 _CollidePoint)
 {
-	glm::vec3 DLight = glm::vec3(0.0f, 0.5f, 0.5f);
-	glm::vec3 Normal = NormalPosition(_position);
-	/*glm::vec3 DLightCol = glm::vec3(1.0f, 1.0f, 1.0f);*/
-	glm::vec3 Ll = glm::dot(Normal,DLight)*mColour;
-	return Ll;
-}
-glm::vec3 Sphere::NormalPosition(glm::vec3 _Intersectposition)
-{
-	return glm::normalize(_Intersectposition-mPosition);
+	return glm::normalize(_CollidePoint -mPosition);
 }

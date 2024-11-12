@@ -1,19 +1,16 @@
 #pragma once
 #include "BaseObject.h"
-#include "Ray.h"
-#include <GLM/glm.hpp>
 
-struct Sphere : public BaseObject
+struct Plane : public BaseObject
 {
 public:
-	Sphere(glm::vec3 mPosition, glm::vec3 mColour, float mRadius);
+	Plane(glm::vec3 _position,glm::vec3 _normal, glm::vec3 _colour);
 
 
 	bool RayCollide(Ray _ray, glm::vec3& _CollidePoint);
+
 	glm::vec3 NormalPosition(glm::vec3 _CollidePoint);
 
 private:
-	float mRadius;
-
-
+	glm::vec3 mNormal{ 0 };
 };

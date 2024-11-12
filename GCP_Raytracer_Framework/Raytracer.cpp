@@ -7,18 +7,18 @@ glm::vec3 Raytracer::TraceRay(Ray ray)
 
 	float CloseDepth = 10000000.0f;
 
-	for (int i = 0; i < sphere.size(); i++)
+	for (int i = 0; i < object.size(); i++)
 	{
 		glm::vec3 CollidePosition;
 
-		if(sphere[i]->RayCollide(ray,CollidePosition))
+		if(object[i]->RayCollide(ray,CollidePosition))
 		{
 			float Depth = glm::length(CollidePosition - ray.mOrigin);
 			if (Depth < CloseDepth)
 			{
 				CloseDepth = Depth;
 				CloseCollidePosition = CollidePosition;
-				PixelColour = sphere[i]->ShadePosition(CollidePosition);
+				PixelColour = object[i]->ShadePosition(CollidePosition);
 			}
 		}
 
