@@ -5,6 +5,7 @@
 #include "Raytracer.h"
 #include "Sphere.h"
 #include "Plane.h"
+#include "Timer.h"
 
 
 int main(int argc, char* argv[])
@@ -23,28 +24,33 @@ int main(int argc, char* argv[])
 
 	Raytracer raytracer;
 	Camera maincamera(glm::ivec2(winSize.x, winSize.y));
-
+	
 	glm::vec3 colour(1, 0, 0);
 
-	Sphere* sphere1 = new Sphere(glm::vec3(0, 0, -50), glm::vec3(0.0, 0.0, 1.0), 1);
+	Sphere* sphere1 = new Sphere(glm::vec3(0, 0, 0), glm::vec3(0.0, 0.0, 1.0), 1);
 	raytracer.object.push_back(sphere1);
-	Sphere* sphere2 = new Sphere(glm::vec3(-1,0, -50), glm::vec3(1.0, 0.0, 0.0), 1);
+	Sphere* sphere2 = new Sphere(glm::vec3(-1,0, 0), glm::vec3(1.0, 0.0, 0.0), 1);
 	raytracer.object.push_back(sphere2);
 	Plane* plane1 = new Plane(glm::vec3(0, -2, 0), glm::vec3(0, 1, 0), glm::vec3(0.3f, 0.3f, 0.3f));
 	raytracer.object.push_back(plane1);
-	Plane* plane2 = new Plane(glm::vec3(0, 0, -50), glm::vec3(0, 0, 1), glm::vec3(0.3f, 0.3f, 0.3f));
+	Plane* plane2 = new Plane(glm::vec3(0, 0, -25), glm::vec3(0, 0, 1), glm::vec3(0.3f, 0.3f, 0.3f));
 	raytracer.object.push_back(plane2);
 	
-	
-	for (int y = 0; y < winSize.y; y++)
+	glm::ivec2 pixelPosition = {0,0};
+
 	{
-		for (int x = 0; x < winSize.x; x++)
+		ScopedTimer ScopedTimer("Timer");
+		for (int y = 0; y < winSize.y; y++)
 		{
+			for (int x = 0; x < winSize.x; x++)
+			{
+				pixelPosition = { x, y };
+				Ray ray = maincamera.GetRay(pixelPosition, winSize);
+				colour = raytracer.TraceRay(ray);
+				_myFramework.DrawPixel(pixelPosition, colour);
 
-			Ray ray = maincamera.GetRay(glm::ivec2(x, y),glm::ivec2(winSize.x,winSize.y));
-			colour = raytracer.TraceRay(ray);
-			_myFramework.DrawPixel(glm::ivec2(x, y), colour);
 
+			}
 		}
 	}
 

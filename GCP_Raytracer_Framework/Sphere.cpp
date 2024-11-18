@@ -1,4 +1,5 @@
 #include "Sphere.h"
+#include "Timer.h"
 #include <iostream>
 
 Sphere::Sphere(glm::vec3 _position, glm::vec3 _colour, float _radius )
@@ -11,7 +12,7 @@ Sphere::Sphere(glm::vec3 _position, glm::vec3 _colour, float _radius )
 bool Sphere::RayCollide(Ray _ray, glm::vec3& _CollidePoint)
 {
 
-
+	//ScopedTimer Timer("RayCollide");
 	glm::vec3 L = mPosition - _ray.mOrigin;
 	float tc = glm::dot(L, _ray.mDirection);
 
