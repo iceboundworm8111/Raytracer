@@ -31,7 +31,7 @@ void ThreadRays(int _numOfThreads, glm::vec2 _winSize, Raytracer* _rayTracer, Ca
 
 	for (int i = 0; i < _winSize.x ; i++)
 	{
-		threads.emplace_back(PixelDraw(_winSize, _rayTracer,_camera,_myFrameWork))
+		//threads.emplace_back(PixelDraw(_winSize, _rayTracer,_camera,_myFrameWork));
 	}
 }
 
