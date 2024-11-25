@@ -5,13 +5,15 @@
 
 Camera::Camera(glm::ivec2 winSize)
 {
-	mProjMat = glm::perspective(glm::radians(45.0f), (float)winSize.x / (float)winSize.y, 0.1f, 100.0f);
+	mProjMat = glm::perspective(glm::radians(60.0f), (float)winSize.x / (float)winSize.y, 0.1f, 100.0f);
+	mViewMat = glm::mat4{ 1.f };
+	glm::vec3 position = glm::vec3(0, 0, 0);
+	glm::vec3 rotation = glm::vec3(0, 0, 0);
 
-	glm::vec3 cameraPos(0.0f, 0.0f, 10.0f);
-	glm::vec3 target(0.0f, 0.0f, 0.0f);
-	glm::vec3 up(0.0f, 1.0f, 0.0f);
-
-	mViewMat = glm::lookAt(cameraPos, target, up);
+	mViewMat = glm::rotate(mViewMat, glm::radians(rotation.x), glm::vec3(1, 0, 0));
+	mViewMat = glm::rotate(mViewMat, glm::radians(rotation.y), glm::vec3(0, 1, 0));
+	mViewMat = glm::rotate(mViewMat, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+	mViewMat = glm::translate(mViewMat, position);
 }
 Ray Camera::GetRay(glm::ivec2 windowPos, glm::ivec2 winSize)
 {

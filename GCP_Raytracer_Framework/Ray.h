@@ -4,9 +4,19 @@
 
 struct Ray
 {
+	Ray()
+	{
+
+	}
+	Ray(glm::vec3 _origin, glm::vec3 _direction)
+	{
+		mOrigin = _origin;
+		mDirection = _direction;
+	}
 public:
-	glm::vec3 mOrigin;
-	glm::vec3 mDirection;
+	glm::vec3 mOrigin{ 0.0f };
+	glm::vec3 mDirection{ 0.0f };
+
 private:
 
 };

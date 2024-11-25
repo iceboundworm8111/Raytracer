@@ -20,7 +20,7 @@ public:
     ScopedTimer(std::string name) : m_Name(name) {}
     ~ScopedTimer()
     {
-        float time = m_Timer.ElapsedMillis();
+        float time = m_Timer.Elapsed();
         std::cout << m_Name << " - " << time << "seconds\n";
     }
 private:
