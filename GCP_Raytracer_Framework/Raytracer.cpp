@@ -18,6 +18,8 @@ glm::vec3 Raytracer::TraceRay(Ray ray)
 			float Depth = glm::length(CollidePosition - ray.mOrigin);
 			if (Depth < CloseDepth)
 			{
+				//Depth perception is the ability to see things in three dimensions (including length, width and depth), and to judge how far away an object is. 
+				//Depth perception is made possible by monocular (one eye) and binocular (two eyes) cues.
 				CloseDepth = Depth;
 				CloseCollidePosition = CollidePosition;
 				ClosestObject = objects[i];
@@ -25,9 +27,10 @@ glm::vec3 Raytracer::TraceRay(Ray ray)
 		}
 
 	}
+	
 	for (int i = 0; i < lights.size(); i++)
 	{
-		PixelColour += ClosestObject->ShadePosition(CloseCollidePosition,lights[i]->mPosition);
+		PixelColour += ClosestObject->ShadePosition(CloseCollidePosition,lights[i]->mPosition,lights[i]->mColour,ray.mOrigin);
 	}
 	return PixelColour;
 

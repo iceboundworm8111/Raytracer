@@ -5,11 +5,14 @@
 
 Camera::Camera(glm::ivec2 winSize)
 {
+	//Setting the projection matrix
 	mProjMat = glm::perspective(glm::radians(60.0f), (float)winSize.x / (float)winSize.y, 0.1f, 100.0f);
+	//Setting the view matrix
 	mViewMat = glm::mat4{ 1.f };
+
 	glm::vec3 position = glm::vec3(0, 0, 0);
 	glm::vec3 rotation = glm::vec3(0, 0, 0);
-
+	//Set up the view matrix
 	mViewMat = glm::rotate(mViewMat, glm::radians(rotation.x), glm::vec3(1, 0, 0));
 	mViewMat = glm::rotate(mViewMat, glm::radians(rotation.y), glm::vec3(0, 1, 0));
 	mViewMat = glm::rotate(mViewMat, glm::radians(rotation.z), glm::vec3(0, 0, 1));

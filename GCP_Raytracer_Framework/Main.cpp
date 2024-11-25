@@ -24,13 +24,13 @@ void PixelDraw(glm::ivec2 winSize, Camera* _maincamera, Raytracer* _raytracer, G
 		}
 	}
 }
-
+//This function will create the threads and assign the pixel drawing to them
 void ThreadRays(int _numOfThreads, glm::vec2 _winSize, Raytracer* _rayTracer, Camera* _camera, GCP_Framework* _myFrameWork)
 {
-	//This function will create the threads and assign the pixel drawing to them
+	//Creation of the vector which contains the threads
 	std::vector<std::thread> threads;
-	int xRows = _winSize.x / _numOfThreads;
-
+	int xRows = _winSize.x / _numOfThreads; //Divides the screen on the x-axis by the number threads
+	//This will create the threads and assign the pixel drawing to them
 	for (int i = 0; i < _numOfThreads; i++)
 	{
 		int xStart = i * xRows;
@@ -43,7 +43,7 @@ void ThreadRays(int _numOfThreads, glm::vec2 _winSize, Raytracer* _rayTracer, Ca
 		{
 			xEnd = (i + 1) * xRows;
 		}
-		threads.push_back(std::thread(PixelDraw, _winSize, _camera, _rayTracer, _myFrameWork,xStart,xEnd));
+		threads.push_back(std::thread(PixelDraw, _winSize, _camera, _rayTracer, _myFrameWork,xStart,xEnd)); //Emplace is better?
 	}
 	for (int i = 0; i < _numOfThreads; i++)
 	{
@@ -71,11 +71,13 @@ int main(int argc, char* argv[])
 	
 
 	//Creation of the objects and the planes
+	// Sphere - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Colour, Radius
 	Sphere* sphere1 = new Sphere(glm::vec3(-10, 0, -50), glm::vec3(0.0, 0.0, 1.0), 10);
 	raytracer.objects.push_back(sphere1);
 	Sphere* sphere2 = new Sphere(glm::vec3(5,-5, -62), glm::vec3(1.0, 0.0, 0.0), 10);
 	raytracer.objects.push_back(sphere2);
 
+	// Plane - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Normal, Colour
 	Plane* floor = new Plane(glm::vec3(0, -14, 50), glm::vec3(0, 1, 0), glm::vec3(1.0f, 1.0f, 1.0f));
 	raytracer.objects.push_back(floor);
 	Plane* wall = new Plane(glm::vec3(0, 0, -70), glm::vec3(0, 0, 1), glm::vec3(1.0f, 1.0f, 1.0f));
