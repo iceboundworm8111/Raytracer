@@ -11,4 +11,4 @@ struct Light
 		mPosition = _position;
 		mColour = _colour;
 	}
-};
+}; 

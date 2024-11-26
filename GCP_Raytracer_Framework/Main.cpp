@@ -7,6 +7,7 @@
 #include "Plane.h"
 #include "Light.h"
 #include "Timer.h"
+#include <random>
 #include <thread>
 
 void PixelDraw(glm::ivec2 winSize, Camera* _maincamera, Raytracer* _raytracer, GCP_Framework* _myFrameWork,int startRow,int endRow)
@@ -54,6 +55,20 @@ void ThreadRays(int _numOfThreads, glm::vec2 _winSize, Raytracer* _rayTracer, Ca
 
 int main(int argc, char* argv[])
 {
+	float randomPosZ = 0.0f;
+	float randomPosY = 0.0f;
+	float randomPosX = 0.0f;
+
+	float randomColR = 0.0f;
+	float randomColG = 0.0f;
+	float randomColB = 0.0f;
+
+	float randomRad = 0.0f;
+
+	randomPosZ = rand() % 70;
+
+
+	randomRad = rand() % 5;
 	// Set window size
 	glm::ivec2 winSize(640,480);
 
@@ -72,28 +87,36 @@ int main(int argc, char* argv[])
 
 	//Creation of the objects and the planes
 	// Sphere - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Colour, Radius
-	Sphere* sphere1 = new Sphere(glm::vec3(-10, 0, -50), glm::vec3(0.0, 0.0, 1.0), 10);
+	Sphere* sphere1 = new Sphere(glm::vec3(-20, 0, -randomPosZ), glm::vec3(0.0, 0.0, 1.0), randomRad);
 	raytracer.objects.push_back(sphere1);
-	Sphere* sphere2 = new Sphere(glm::vec3(5,-5, -62), glm::vec3(1.0, 0.0, 0.0), 10);
+	Sphere* sphere2 = new Sphere(glm::vec3(5,5, -randomPosZ), glm::vec3(1.0, 0.0, 0.0), randomRad);
 	raytracer.objects.push_back(sphere2);
+	Sphere* sphere3 = new Sphere(glm::vec3(-30, 15, -randomPosZ), glm::vec3(0.5, 0.5, 1.0), randomRad);
+	raytracer.objects.push_back(sphere3);
+	Sphere* sphere4 = new Sphere(glm::vec3(20, -5, -randomPosZ), glm::vec3(1.0, 0.0, 0.8), randomRad);
+	raytracer.objects.push_back(sphere4);
+	Sphere* sphere5 = new Sphere(glm::vec3(0, 0, -randomPosZ), glm::vec3(0.8, 1.0, 1.0), randomRad);
+	raytracer.objects.push_back(sphere5);
+	Sphere* sphere6 = new Sphere(glm::vec3(0, -10, -randomPosZ), glm::vec3(1.0, 1.0, 0.0), randomRad);
+	raytracer.objects.push_back(sphere6);
 
 	// Plane - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Normal, Colour
-	Plane* floor = new Plane(glm::vec3(0, -14, 50), glm::vec3(0, 1, 0), glm::vec3(1.0f, 1.0f, 1.0f));
+	Plane* floor = new Plane(glm::vec3(0, -15, 50), glm::vec3(0, 1, 0), glm::vec3(1.0f, 1.0f, 1.0f));
 	raytracer.objects.push_back(floor);
 	Plane* wall = new Plane(glm::vec3(0, 0, -70), glm::vec3(0, 0, 1), glm::vec3(1.0f, 1.0f, 1.0f));
 	raytracer.objects.push_back(wall);
 
 	//Creation of the light
 	// Lights - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Colour
-	Light* llight = new Light(glm::vec3(-40, 0, -40), glm::vec3(1.0f, 1.0f, 1.0f));
+	Light* llight = new Light(glm::vec3(-40, 0, -30), glm::vec3(1.0f, 1.0f, 1.0f));
 	raytracer.lights.push_back(llight);
-	Light* rlight = new Light(glm::vec3(45, 10, -50), glm::vec3(1.0f, 1.0f, 1.0f));
+	Light* rlight = new Light(glm::vec3(45, 10, -30), glm::vec3(1.0f, 1.0f, 1.0f));
 	raytracer.lights.push_back(rlight);
 
 	//Number of threads
 	int NumberOfThreads = 32;
 	{
-		//Fastest time in debug was 0.192836 seconds with 32 threads
+		//Fastest time in debug was 0.21998 seconds with 32 threads (shadows,specular, diffuse)
 		ScopedTimer Timer("Main Loop");
 		ThreadRays(NumberOfThreads, glm::vec2(winSize.x, winSize.y), &raytracer, &maincamera, &_myFramework);
 	}

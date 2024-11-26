@@ -25,13 +25,31 @@ glm::vec3 Raytracer::TraceRay(Ray ray)
 				ClosestObject = objects[i];
 			}
 		}
-
 	}
-	
 	for (int i = 0; i < lights.size(); i++)
 	{
-		PixelColour += ClosestObject->ShadePosition(CloseCollidePosition,lights[i]->mPosition,lights[i]->mColour,ray.mOrigin);
+		bool shadow = false;
+
+		for (int j=0; j < objects.size(); j++)
+		{
+			glm::vec3 ShadowCollidePosition;
+
+			glm::vec3 ShadowRayDirection = CloseCollidePosition + (ClosestObject->NormalPosition(CloseCollidePosition) * 0.001f);
+
+			if (objects[j]->RayCollide(Ray(ShadowRayDirection, glm::normalize(lights[i]->mPosition - CloseCollidePosition)), ShadowCollidePosition))
+			{
+				if (glm::length(ShadowCollidePosition - CloseCollidePosition) < glm::length(lights[i]->mPosition - CloseCollidePosition))
+				{
+					shadow = true;
+					break;
+				}
+			}
+		}
+
+		if (!shadow)
+		{
+			PixelColour += ClosestObject->ShadePosition(CloseCollidePosition, lights[i]->mPosition, lights[i]->mColour, ray.mOrigin);
+		}
 	}
 	return PixelColour;
-
 }
