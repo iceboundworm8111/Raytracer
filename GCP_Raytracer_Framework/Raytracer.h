@@ -9,7 +9,7 @@
 class Raytracer
 {
 public:
-	glm::vec3 TraceRay(Ray ray);
+	glm::vec3 TraceRay(Ray ray,int _depth);
 	std::vector<BaseObject*> objects;
 	std::vector<Light*> lights;
 };

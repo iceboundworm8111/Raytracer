@@ -16,6 +16,7 @@ public:
 	
 	glm::vec3 mPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 mColour = glm::vec3(0.0f,0.0f,0.0f);
+	float mReflectivity = 0.0f;
 private:
 
 };

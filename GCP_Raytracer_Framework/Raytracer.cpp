@@ -2,7 +2,7 @@
 #include "Timer.h"
 #include <iostream>
 
-glm::vec3 Raytracer::TraceRay(Ray ray)
+glm::vec3 Raytracer::TraceRay(Ray ray, int _depth)
 {
 	//ScopedTimer Timer("TraceRay Timer");
 	glm::vec3 PixelColour{ 0.0f };
@@ -25,6 +25,11 @@ glm::vec3 Raytracer::TraceRay(Ray ray)
 				ClosestObject = objects[i];
 			}
 		}
+	}
+
+	if (ClosestObject == nullptr)
+	{
+		return PixelColour;
 	}
 	for (int i = 0; i < lights.size(); i++)
 	{
@@ -51,5 +56,15 @@ glm::vec3 Raytracer::TraceRay(Ray ray)
 			PixelColour += ClosestObject->ShadePosition(CloseCollidePosition, lights[i]->mPosition, lights[i]->mColour, ray.mOrigin);
 		}
 	}
+
+
+	if (_depth < 3 && ClosestObject->mReflectivity >0.01f)
+	{
+		glm::vec3 ReflectDir = glm::reflect(ray.mDirection, ClosestObject->NormalPosition(CloseCollidePosition));
+		Ray ReflectRay(CloseCollidePosition + (ClosestObject->NormalPosition(CloseCollidePosition) *0.001f), ReflectDir);
+		glm::vec3 ReflectColour = TraceRay(ReflectRay, _depth + 1);
+		PixelColour = PixelColour + (ReflectColour * ClosestObject->mReflectivity);
+
+	}	
 	return PixelColour;
 }
