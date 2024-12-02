@@ -9,6 +9,7 @@
 #include "Timer.h"
 #include <random>
 #include <thread>
+#include <random>
 
 void PixelDraw(glm::ivec2 winSize, Camera* _maincamera, Raytracer* _raytracer, GCP_Framework* _myFrameWork,int startRow,int endRow)
 {
@@ -69,6 +70,14 @@ int main(int argc, char* argv[])
 
 
 	randomRad = rand() % 5;
+
+
+
+	std::random_device rd;  // Seed for the random number engine
+	std::mt19937 gen(60); // Mersenne Twister random number engine
+	std::uniform_real_distribution<> dis(0.0, 1.0); // Distribution in range [0.0, 1.0]
+
+	float randomDecimal = dis(gen);
 	// Set window size
 	glm::ivec2 winSize(640,480);
 
@@ -87,18 +96,36 @@ int main(int argc, char* argv[])
 
 	//Creation of the objects and the planes
 	// Sphere - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Colour, Radius
-	Sphere* sphere1 = new Sphere(glm::vec3(-20, 0, -randomPosZ), glm::vec3(0.0, 0.0, 1.0), randomRad);
-	raytracer.objects.push_back(sphere1);
-	Sphere* sphere2 = new Sphere(glm::vec3(5,5, -randomPosZ), glm::vec3(1.0, 0.0, 0.0), randomRad);
-	raytracer.objects.push_back(sphere2);
-	Sphere* sphere3 = new Sphere(glm::vec3(-30, 15, -randomPosZ), glm::vec3(0.5, 0.5, 1.0), randomRad);
-	raytracer.objects.push_back(sphere3);
-	Sphere* sphere4 = new Sphere(glm::vec3(20, -5, -randomPosZ), glm::vec3(1.0, 0.0, 0.8), randomRad);
-	raytracer.objects.push_back(sphere4);
-	Sphere* sphere5 = new Sphere(glm::vec3(0, 0, -randomPosZ), glm::vec3(0.8, 1.0, 1.0), randomRad);
-	raytracer.objects.push_back(sphere5);
-	Sphere* sphere6 = new Sphere(glm::vec3(0, -10, -randomPosZ), glm::vec3(1.0, 1.0, 0.0), randomRad);
-	raytracer.objects.push_back(sphere6);
+
+
+	//Sphere* sphere1 = new Sphere(glm::vec3(-20, 0, -randomPosZ), glm::vec3(0.0, 0.0, 1.0), randomRad);
+	//raytracer.objects.push_back(sphere1);
+	//Sphere* sphere2 = new Sphere(glm::vec3(5,5, -randomPosZ), glm::vec3(1.0, 0.0, 0.0), randomRad);
+	//raytracer.objects.push_back(sphere2);
+	//Sphere* sphere3 = new Sphere(glm::vec3(-30, 15, -randomPosZ), glm::vec3(0.5, 0.5, 1.0), randomRad);
+	//raytracer.objects.push_back(sphere3);
+	//Sphere* sphere4 = new Sphere(glm::vec3(20, -5, -randomPosZ), glm::vec3(1.0, 0.0, 0.8), randomRad);
+	//raytracer.objects.push_back(sphere4);
+	//Sphere* sphere5 = new Sphere(glm::vec3(0, 0, -randomPosZ), glm::vec3(0.8, 1.0, 1.0), randomRad);
+	//raytracer.objects.push_back(sphere5);
+	//Sphere* sphere6 = new Sphere(glm::vec3(0, -10, -randomPosZ), glm::vec3(1.0, 1.0, 0.0), randomRad);
+	//raytracer.objects.push_back(sphere6);
+
+
+	for (int i = 0; i < 10; i++)
+	{
+		randomPosZ = rand() % 61 - 70; // random number between -70 and -10
+		randomPosY = rand() % 31 - 10; // random number between -10 and 20
+		randomPosX = rand() % 61 - 30; // random number between -30 and 30
+		float randomColR = dis(gen);
+		float randomColG = dis(gen);
+		float randomColB =  dis(gen);
+		randomRad = rand() % 5;
+		// Sphere - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Colour, Radius
+		Sphere* sphere = new Sphere(glm::vec3(randomPosX, randomPosY, randomPosZ), glm::vec3(randomColR, randomColG, randomColB), 3);
+		raytracer.objects.push_back(sphere);
+	}
+
 
 	// Plane - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Normal, Colour
 	Plane* floor = new Plane(glm::vec3(0, -15, 50), glm::vec3(0, 1, 0), glm::vec3(1.0f, 1.0f, 1.0f));
