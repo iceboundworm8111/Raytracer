@@ -13,13 +13,37 @@
 
 void PixelDraw(glm::ivec2 winSize, Camera* _maincamera, Raytracer* _raytracer, GCP_Framework* _myFrameWork,int startRow,int endRow)
 {
+	float samples = 16.0f;
+	/*float jitterMatrix[4 * 2] = 
+	{
+	   -0.25, 0.75,
+		0.75,  0.25,
+	   -0.75, -0.25,
+		0.25, -0.75,
+	};*/
+	float jitterMatrix[4 * 2] = {
+	-1.0 / 4.0,  3.0 / 4.0,
+	 3.0 / 4.0,  1.0 / 3.0,
+	-3.0 / 4.0, -1.0 / 4.0,
+	 1.0 / 4.0, -3.0 / 4.0,
+	};
+
 	//This function will draw the pixels to the screen
 	for (int y = 0; y < winSize.y; y++)
 	{
 		for (int x = startRow; x < endRow; x++)
 		{
-			Ray ray = _maincamera->GetRay(glm::ivec2(x,y), winSize);
-			glm::vec3 colour = _raytracer->TraceRay(ray,0);
+			glm::vec3 colour (0);
+		
+				for (int i = 0; i < samples; i++)
+				{
+
+					Ray ray = _maincamera->GetRay(glm::vec2(x + jitterMatrix[2*i], y + jitterMatrix[(2*i)+1]), winSize);
+					colour += _raytracer->TraceRay(ray, 0);
+
+				}
+			// divide by number of samples
+			colour /= samples;
 			_myFrameWork->DrawPixel(glm::ivec2(x,y), colour);
 
 
@@ -79,7 +103,7 @@ int main(int argc, char* argv[])
 
 	float randomDecimal = dis(gen);
 	// Set window size
-	glm::ivec2 winSize(680,480);
+	glm::ivec2 winSize(920,680);
 
 	// This will handle rendering to screen
 	GCP_Framework _myFramework;
@@ -92,27 +116,9 @@ int main(int argc, char* argv[])
 	//Initialises the raytracer and the camera
 	Raytracer raytracer;
 	Camera maincamera(glm::ivec2(winSize.x, winSize.y));
-	
 
 	//Creation of the objects and the planes
-	// Sphere - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Colour, Radius
-
-
-	/*Sphere* sphere1 = new Sphere(glm::vec3(0, 0, -70), glm::vec3(0.0, 0.0, 1.0), randomRad);
-	raytracer.objects.push_back(sphere1);*/
-	//Sphere* sphere2 = new Sphere(glm::vec3(5,5, -randomPosZ), glm::vec3(1.0, 0.0, 0.0), randomRad);
-	//raytracer.objects.push_back(sphere2);
-	//Sphere* sphere3 = new Sphere(glm::vec3(-30, 15, -randomPosZ), glm::vec3(0.5, 0.5, 1.0), randomRad);
-	//raytracer.objects.push_back(sphere3);
-	//Sphere* sphere4 = new Sphere(glm::vec3(20, -5, -randomPosZ), glm::vec3(1.0, 0.0, 0.8), randomRad);
-	//raytracer.objects.push_back(sphere4);
-	//Sphere* sphere5 = new Sphere(glm::vec3(0, 0, -randomPosZ), glm::vec3(0.8, 1.0, 1.0), randomRad);
-	//raytracer.objects.push_back(sphere5);
-	//Sphere* sphere6 = new Sphere(glm::vec3(0, -10, -randomPosZ), glm::vec3(1.0, 1.0, 0.0), randomRad);
-	//raytracer.objects.push_back(sphere6);
-
-
-	for (int i = 0; i <= 100; i++)
+	for (int i = 0; i <= 20; i++)
 	{
 		randomPosZ = rand() % 61 - 70; // random number between -70 and -10
 		randomPosY = rand() % 36 - 15; // random number between -10 and 20

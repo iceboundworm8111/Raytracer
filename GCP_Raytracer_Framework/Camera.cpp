@@ -18,7 +18,7 @@ Camera::Camera(glm::ivec2 winSize)
 	mViewMat = glm::rotate(mViewMat, glm::radians(rotation.z), glm::vec3(0, 0, 1));
 	mViewMat = glm::translate(mViewMat, position);
 }
-Ray Camera::GetRay(glm::ivec2 windowPos, glm::ivec2 winSize)
+Ray Camera::GetRay(glm::vec2 windowPos, glm::ivec2 winSize)
 {
 	//ScopedTimer Timer("GetRay");
 	Ray ray;

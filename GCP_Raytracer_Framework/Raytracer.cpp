@@ -57,11 +57,12 @@ glm::vec3 Raytracer::TraceRay(Ray ray, int _depth)
 		}
 	}
 
-
+	//Reflection
 	if (_depth < 3 && ClosestObject->mReflectivity >0.01f)
 	{
 		glm::vec3 ReflectDir = glm::reflect(ray.mDirection, ClosestObject->NormalPosition(CloseCollidePosition));
 		Ray ReflectRay(CloseCollidePosition + (ClosestObject->NormalPosition(CloseCollidePosition) *0.001f), ReflectDir);
+
 		glm::vec3 ReflectColour = TraceRay(ReflectRay, _depth + 1);
 		PixelColour = PixelColour + (ReflectColour * ClosestObject->mReflectivity);
 
