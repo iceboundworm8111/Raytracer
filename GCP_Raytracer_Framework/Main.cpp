@@ -10,10 +10,11 @@
 #include <random>
 #include <thread>
 #include <random>
+#include <fstream>
 
 void PixelDraw(glm::ivec2 winSize, Camera* _maincamera, Raytracer* _raytracer, GCP_Framework* _myFrameWork,int startRow,int endRow)
 {
-	float samples = 16.0f;
+	float samples = 8.0f;
 	/*float jitterMatrix[4 * 2] = 
 	{
 	   -0.25, 0.75,
@@ -37,13 +38,14 @@ void PixelDraw(glm::ivec2 winSize, Camera* _maincamera, Raytracer* _raytracer, G
 		
 				for (int i = 0; i < samples; i++)
 				{
-
+					
 					Ray ray = _maincamera->GetRay(glm::vec2(x + jitterMatrix[2*i], y + jitterMatrix[(2*i)+1]), winSize);
 					colour += _raytracer->TraceRay(ray, 0);
 
 				}
 			// divide by number of samples
 			colour /= samples;
+			
 			_myFrameWork->DrawPixel(glm::ivec2(x,y), colour);
 
 
@@ -80,6 +82,7 @@ void ThreadRays(int _numOfThreads, glm::vec2 _winSize, Raytracer* _rayTracer, Ca
 
 int main(int argc, char* argv[])
 {
+	
 	float randomPosZ = 0.0f;
 	float randomPosY = 0.0f;
 	float randomPosX = 0.0f;
@@ -118,7 +121,7 @@ int main(int argc, char* argv[])
 	Camera maincamera(glm::ivec2(winSize.x, winSize.y));
 
 	//Creation of the objects and the planes
-	for (int i = 0; i <= 20; i++)
+	for (int i = 0; i <= 500; i++)
 	{
 		randomPosZ = rand() % 61 - 70; // random number between -70 and -10
 		randomPosY = rand() % 36 - 15; // random number between -10 and 20
@@ -128,7 +131,7 @@ int main(int argc, char* argv[])
 		float randomColB =  dis(gen);
 		randomRad = rand() % 5;
 		// Sphere - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Colour, Radius
-		Sphere* sphere = new Sphere(glm::vec3(randomPosX, randomPosY, randomPosZ), glm::vec3(randomColR, randomColG, randomColB),3);
+		Sphere* sphere = new Sphere(glm::vec3(randomPosX, randomPosY, randomPosZ), glm::vec3(randomColR, randomColG, randomColB),1);
 		sphere->mReflectivity = 0.5f;
 		raytracer.objects.push_back(sphere);
 	}
@@ -147,17 +150,28 @@ int main(int argc, char* argv[])
 	Light* rlight = new Light(glm::vec3(45, 10, -30), glm::vec3(1.0f, 1.0f, 1.0f));
 	raytracer.lights.push_back(rlight);
 
+	std::ofstream Results("Results1.csv");
+	Results << "No of Threads,Time\n";
+	
+
 	//Number of threads
-	int NumberOfThreads = 32;
+	
+	for(int NumberOfThreads = 1;NumberOfThreads <=100;NumberOfThreads++)
 	{
+		
+		std::cout << NumberOfThreads << std::endl;
 		//Fastest time in debug was 0.21998 seconds with 32 threads (shadows,specular, diffuse)
-		ScopedTimer Timer("Main Loop");
+		Timer timer;
+		
 		ThreadRays(NumberOfThreads, glm::vec2(winSize.x, winSize.y), &raytracer, &maincamera, &_myFramework);
+		float time = timer.ElapsedMillis();
+		Results << NumberOfThreads << "," << time << "\n";
 	}
+
 
 	
 
-
+	Results.close();
 	// Pushes the framebuffer to OpenGL and renders to screen
 	// Also contains an event loop that keeps the window going until it's closed
 	_myFramework.ShowAndHold();
