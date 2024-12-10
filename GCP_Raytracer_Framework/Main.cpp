@@ -82,7 +82,7 @@ void ThreadRays(int _numOfThreads, glm::vec2 _winSize, Raytracer* _rayTracer, Ca
 
 int main(int argc, char* argv[])
 {
-	
+
 	float randomPosZ = 0.0f;
 	float randomPosY = 0.0f;
 	float randomPosX = 0.0f;
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 
 	float randomDecimal = dis(gen);
 	// Set window size
-	glm::ivec2 winSize(920,680);
+	glm::ivec2 winSize(640, 480);
 
 	// This will handle rendering to screen
 	GCP_Framework _myFramework;
@@ -128,10 +128,10 @@ int main(int argc, char* argv[])
 		randomPosX = rand() % 61 - 30; // random number between -30 and 30
 		float randomColR = dis(gen);
 		float randomColG = dis(gen);
-		float randomColB =  dis(gen);
+		float randomColB = dis(gen);
 		randomRad = rand() % 5;
 		// Sphere - Position (left/right(-left, +right), up/down(+up, -down), forward/back(-back, +forward)), Colour, Radius
-		Sphere* sphere = new Sphere(glm::vec3(randomPosX, randomPosY, randomPosZ), glm::vec3(randomColR, randomColG, randomColB),1);
+		Sphere* sphere = new Sphere(glm::vec3(randomPosX, randomPosY, randomPosZ), glm::vec3(randomColR, randomColG, randomColB), 1);
 		sphere->mReflectivity = 0.5f;
 		raytracer.objects.push_back(sphere);
 	}
@@ -152,24 +152,26 @@ int main(int argc, char* argv[])
 
 	std::ofstream Results("Results1.csv");
 	Results << "No of Threads,Time\n";
-	
+
 
 	//Number of threads
+		for (int NumberOfThreads = 1; NumberOfThreads <= 500; NumberOfThreads++)
+		{
+			float TotalTime = 0.0f;
+			std::cout << NumberOfThreads << std::endl;
+			for (int i = 0; i < 5; i++)
+			{	
+				Timer timer;
+				ThreadRays(NumberOfThreads, glm::vec2(winSize.x, winSize.y), &raytracer, &maincamera, &_myFramework);
+				TotalTime += timer.ElapsedMillis();
+
+			}
+			TotalTime /= 5;
+			Results << NumberOfThreads << "," << TotalTime << "\n";
+		}
 	
-	for(int NumberOfThreads = 1;NumberOfThreads <=100;NumberOfThreads++)
-	{
-		
-		std::cout << NumberOfThreads << std::endl;
-		//Fastest time in debug was 0.21998 seconds with 32 threads (shadows,specular, diffuse)
-		Timer timer;
-		
-		ThreadRays(NumberOfThreads, glm::vec2(winSize.x, winSize.y), &raytracer, &maincamera, &_myFramework);
-		float time = timer.ElapsedMillis();
-		Results << NumberOfThreads << "," << time << "\n";
-	}
 
 
-	
 
 	Results.close();
 	// Pushes the framebuffer to OpenGL and renders to screen
