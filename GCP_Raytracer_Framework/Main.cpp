@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
 	Camera maincamera(glm::ivec2(winSize.x, winSize.y));
 
 	//Creation of the objects and the planes
-	for (int i = 0; i <= 500; i++)
+	for (int i = 0; i <= 25; i++)
 	{
 		randomPosZ = rand() % 61 - 70; // random number between -70 and -10
 		randomPosY = rand() % 36 - 15; // random number between -10 and 20
@@ -155,7 +155,7 @@ int main(int argc, char* argv[])
 
 
 	//Number of threads
-		for (int NumberOfThreads = 1; NumberOfThreads <= 500; NumberOfThreads++)
+		for (int NumberOfThreads = 1; NumberOfThreads <= 250; NumberOfThreads++)
 		{
 			float TotalTime = 0.0f;
 			std::cout << NumberOfThreads << std::endl;
