@@ -6,7 +6,7 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Light.h"
-#include "Timer.h"
+
 #include <random>
 #include <thread>
 #include <random>
@@ -83,22 +83,18 @@ void ThreadRays(int _numOfThreads, glm::vec2 _winSize, Raytracer* _rayTracer, Ca
 int main(int argc, char* argv[])
 {
 
-	float randomPosZ = 0.0f;
-	float randomPosY = 0.0f;
-	float randomPosX = 0.0f;
+	float randomPosZ = 0.0f;//Random position on the z-axis for objects
+	float randomPosY = 0.0f;//Random position on the y-axis for objects
+	float randomPosX = 0.0f;//Random position on the x-axis for objects
 
-	float randomColR = 0.0f;
-	float randomColG = 0.0f;
-	float randomColB = 0.0f;
+	float randomColR = 0.0f;//Random colour for the red channel for objects
+	float randomColG = 0.0f;//Random colour for the green channel for objects
+	float randomColB = 0.0f;//Random colour for the blue channel for objects
 
-	float randomRad = 0.0f;
+	float randomRad = 0.0f;//Random radius for objects
 
 	randomPosZ = rand() % 70;
-
-
 	randomRad = rand() % 5;
-
-
 
 	std::random_device rd;  // Seed for the random number engine
 	std::mt19937 gen(rd()); // Mersenne Twister random number engine
@@ -120,8 +116,10 @@ int main(int argc, char* argv[])
 	Raytracer raytracer;
 	Camera maincamera(glm::ivec2(winSize.x, winSize.y));
 
+	int NumberOfObjects = 25;//Number of objects
+
 	//Creation of the objects and the planes
-	for (int i = 0; i <= 25; i++)
+	for (int i = 0; i <= NumberOfObjects; i++)
 	{
 		randomPosZ = rand() % 61 - 70; // random number between -70 and -10
 		randomPosY = rand() % 36 - 15; // random number between -10 and 20
@@ -150,34 +148,14 @@ int main(int argc, char* argv[])
 	Light* rlight = new Light(glm::vec3(45, 10, -30), glm::vec3(1.0f, 1.0f, 1.0f));
 	raytracer.lights.push_back(rlight);
 
-	std::ofstream Results("Results1.csv");
-	Results << "No of Threads,Time\n";
-
 
 	//Number of threads
-		for (int NumberOfThreads = 1; NumberOfThreads <= 250; NumberOfThreads++)
-		{
-			float TotalTime = 0.0f;
-			std::cout << NumberOfThreads << std::endl;
-			for (int i = 0; i < 5; i++)
-			{	
-				Timer timer;
-				ThreadRays(NumberOfThreads, glm::vec2(winSize.x, winSize.y), &raytracer, &maincamera, &_myFramework);
-				TotalTime += timer.ElapsedMillis();
-
-			}
-			TotalTime /= 5;
-			Results << NumberOfThreads << "," << TotalTime << "\n";
-		}
-	
+	int NumberOfThreads = 16;
+	ThreadRays(NumberOfThreads, glm::vec2(winSize.x, winSize.y), &raytracer, &maincamera, &_myFramework);
 
 
-
-	Results.close();
 	// Pushes the framebuffer to OpenGL and renders to screen
 	// Also contains an event loop that keeps the window going until it's closed
 	_myFramework.ShowAndHold();
 	return 0;
-
-
 }

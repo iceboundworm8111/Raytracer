@@ -10,7 +10,7 @@ struct Light
 
 	Light(glm::vec3 _position, glm::vec3 _colour)
 	{
-		mPosition = _position;
-		mColour = _colour;
+		mPosition = _position;//Sets the position of the light
+		mColour = _colour;//Sets the colour of the light
 	}
 }; 
